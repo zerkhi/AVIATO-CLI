@@ -25,36 +25,36 @@ reportdir(){
 }
 
 lhd_scan(){
-	echo "${GREEN}[+]Logging Live Host ${RESET}"
+	echo "${GREEN}[+] Logging Live Host ${RESET}"
         nmap -oG grepable-$name $iprange
         cat grepable-$name | grep Up | cut -d ' ' -f 2 | sort -u > $name-livehost.txt
         cat $name-livehost.txt
-        echo "${GREEN}[+]Logging Live Host Done ${RESET}"
+        echo "${GREEN}[+] Logging Live Host Done ${RESET}"
 }
 
 basic_scan(){
-	echo "${GREEN}Scanning Started ${RESET}"
+	echo "${GREEN}[+] Scanning Started ${RESET}"
         nmap -A -oA basic_scan_$name $iprange | ccze -A | ansi2html > raw_basic_scan_$name.html
-        echo "${GREEN}Main Scan Done ${RESET}"
-	sleep 10
+        echo "${GREEN}[+] Main Scan Done ${RESET}"
+	sleep 20
 	xsltproc -o basic_scan_$name.html ../nmap-bootstrap.xsl basic_scan_$name.xml
 
 }
 
 vulners_cve(){
-	echo "${GREEN}Scanning for vulnerabilities CVE in live host ${RESET}"
+	echo "${GREEN}[+] Scanning for vulnerabilities CVE in live host ${RESET}"
         nmap -oA vulners_scan_$name -sV $iprange --script vulners.nse | ccze -A | ansi2html > raw_vulners_$name.html
-        echo "${green}Vulnerability Scanning Done ${reset}"
+        echo "${green}[+] Vulnerability Scanning Done ${reset}"
 	sleep 20
 	xsltproc -o vulners_scan_$name.html ../nmap-bootstrap.xsl vulners_scan_$name.xml
 }
 
 adv_scan(){
-	echo "${GREEN}Advance Vulnerabilty Scan Started ${RESET}"
+	echo "${GREEN}[+] Advance Vulnerabilty Scan Started ${RESET}"
         nmap -oA advance_vuln_$name -sV $iprange --script=vulscan/vulscan.nse | ccze -A | ansi2html > raw_advance-vuln.html
 	sleep 10
 	xsltproc -o advance_vuln_$name.html ../nmap-bootstrap.xsl advance_vuln_$name.xml
-	echo "${GREEN}Advance Vulnerabilty Scan Completed ${RESET}"
+	echo "${GREEN}[+] Advance Vulnerabilty Scan Completed ${RESET}"
 
 }
 
